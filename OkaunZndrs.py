@@ -6,7 +6,7 @@ from copy import deepcopy
 # random.randint(0,9) - generates random int between 0,9 - time seeded
 
 
-
+"""
 # is Okaun on the board, what is the current base power and toughness
 def get_okaun_status(okaun):
     #print("okaun status and power toughness")
@@ -21,6 +21,7 @@ def get_zndrs_status(zndrs):
 def get_karak_status(karak):
     #print("Krark's thumb on the battlefield.")
     return karak
+"""
 
 def win_flip(single_flip,board):
     if (single_flip == True):

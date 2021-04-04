@@ -8,3 +8,8 @@ MTG commander team pair, Zndrsplt and Okaun. Has the following features:
 3. Calculate Okaun's new power and toughness. 
 
 will later be connected to hardware.
+
+
+Here is a screenshot!
+
+![Screenshot](Screenshot.jpg)
