@@ -6,7 +6,8 @@ from copy import deepcopy
 # random.randint(0,9) - generates random int between 0,9 - time seeded
 
 
-"""
+""" Looks like these functions won't be needed
+    They are now tracked via the board - board state variable
 # is Okaun on the board, what is the current base power and toughness
 def get_okaun_status(okaun):
     #print("okaun status and power toughness")
