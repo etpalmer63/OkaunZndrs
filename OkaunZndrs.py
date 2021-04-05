@@ -27,6 +27,7 @@ def win_flip(single_flip,board):
     if (single_flip == True):
         if board["zndrs"]:      #Zndrsplt on battlefield
             print("Draw a card")
+            print("*FLASHING LIGHTS*") 
 
         if board["okaun"]:
             board["okaun_pt"][0] = board["okaun_pt"][0] * 2
@@ -48,7 +49,7 @@ def flip_coin(single_flip, board):
             win_flip(single_flip,board)
             return True
         else:
-            print("LOOSE")
+            print("LOSE")
             return False
     else: 
         print("Flipping one coin");
@@ -57,7 +58,7 @@ def flip_coin(single_flip, board):
             win_flip(single_flip,board)
             return True
         else:
-            print("LOOSE")
+            print("LOSE")
             return False
         
 
@@ -156,6 +157,7 @@ def menu_select(board):
         if (board["okaun"]==False):
             board["okaun"] = True  #Okaun on the battlefield
             print("Okaun entered the battlefield.")
+            print("*FLASHING RED LIGHTS*")
         else:
             board["okaun"] = False  #Okaun not on the battlefield
             print("Okaun exited the battlefield.")
@@ -164,6 +166,8 @@ def menu_select(board):
         if (board["zndrs"]==False):
             board["zndrs"] = True  #Zndrsplt on the battlefield
             print("Zndrslpt entered the battlefield.")
+            print("*FLASHING BLUE LIGHTS*")
+            flash_blue_lights()
         else:
             board["zndrs"] = False  #Zndrsplt not on the battlefield
             print("Zndrslpt exited the battlefield.")
@@ -197,6 +201,12 @@ def menu_select(board):
 
 
 
+def flash_blue_lights():
+    #enter code to make blue lights flash
+    print("The blue lights flashed")
+
+
+def flash_red_lights():
 
 """
 This board dictionary contains inforamtion about the board state
