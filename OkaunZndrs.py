@@ -208,6 +208,8 @@ def flash_blue_lights():
 
 
 def flash_red_lights():
+    #enter code to make red lights flash
+    print("The red lights flashed")
 
 """
 This board dictionary contains inforamtion about the board state
