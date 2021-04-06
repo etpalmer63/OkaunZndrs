@@ -13,23 +13,27 @@ def win_flip(single_flip,board):
     string = ""
     str1 = ""
     str2 = ""
+    
+    string = "WIN!"
 
     if (single_flip == True):
+
         if board["zndrs"]:      #Zndrsplt on battlefield
-            print("Draw a card")
-            str1 = "Draw a card\n"
-            print("*FLASHING LIGHTS*") 
+            #print("Draw a card")
+            str1 = "\nDraw a card"
+            #print("*FLASHING LIGHTS*") 
 
         if board["okaun"]:
             board["okaun_pt"][0] = board["okaun_pt"][0] * 2
             board["okaun_pt"][1] = board["okaun_pt"][1] * 2
-            print( "Okaun's new power and toughness are " + \
-                    str(board["okaun_pt"][0]) + "/" + \
-                    str(board["okaun_pt"][1]) + ".");
-            str2 =  "Okaun's new power and toughness are " + \
+            #print( "Okaun's new power and toughness are " + \
+            #        str(board["okaun_pt"][0]) + "/" + \
+            #        str(board["okaun_pt"][1]) + ".");
+            str2 =  "\nOkaun's new power and toughness are " + \
                     str(board["okaun_pt"][0]) + "/" + \
                     str(board["okaun_pt"][1]) + ".";
-    string = str1 + str2
+    string += str1 + str2
+    print(string)
     return string
 
 
@@ -87,11 +91,11 @@ def flip_coin(single_flip, board, choice):
     for each won flip, Okaun's power and toughness * 2^(won flips)
     for each won flip, draw a card
 """
-def flip_sequence(flips_won, okaun_pt):
+def flip_sequence(flips_won, board):
     
     single_flip = False
 
-    while flip_coin(single_flip, okaun_pt):
+    while flip_coin(single_flip, board, 0):  #TODO: always picking heads
         print("You won a flip!")
         flips_won += 1
     return flips_won

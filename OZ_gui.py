@@ -1,8 +1,7 @@
 import gi
 
-
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib
 
 
 from OZFunctions import *
@@ -65,7 +64,7 @@ class okaun_tough_dialog(Gtk.Dialog):
         button1.connect("clicked", self.on_button1_clicked)
         box.add(button1)
 
-        button2 = Gtk.Button(label="Power Down")
+        button2 = Gtk.Button(label="Toughness Down")
         button2.connect("clicked", self.on_button2_clicked)
         box.add(button2)
 
@@ -101,8 +100,18 @@ class single_flip_window(Gtk.Dialog):
         self.set_decorated(False)
 
         box = self.get_content_area()    
-        
-        label = Gtk.Label(label="Coin Flip: Heads or Tails?")
+       
+        global board
+       
+        if board["karak"]:
+            label_str = "Flipping Two Coins:\n"
+        else:
+            label_str = "Flipping One Coin:\n"
+
+        label_str += "Heads or Tails?"
+
+        #label = Gtk.Label(label="Coin Flip: Heads or Tails?")
+        label = Gtk.Label(label=label_str)
         box.add(label)
 
         button1 = Gtk.Button(label="Heads")
@@ -144,28 +153,75 @@ class single_flip_result_window(Gtk.Dialog):
         self.set_decorated(False)
 
         box = self.get_content_area()    
+       
+        global last_result, board
+
+        if last_result:
+            label = Gtk.Label(label=win_flip(True,board))
+        else:
+            label = Gtk.Label(label="LOSE!")
+        box.add(label)
+
         
-        label = Gtk.Label(label="LOSE!")
+
+        #self.add_events(Gtk.Gdk.BUTTON_PRESS_MASK)
+        #self.connect("button-press-event", print("a click!"))
+
+        self.show_all()
+
+        def destroy_me():
+            Gtk.Widget.destroy(self)
+
+       
+        GLib.timeout_add(2000, destroy_me)
+
+class flip_sequence_result_window(Gtk.Dialog):
+    def __init__(self,parent):
+        Gtk.Dialog.__init__(self, title="Sequence Result", transient_for=parent, flags=0)
+
+        self.set_decorated(False)
+
+        box = self.get_content_area()    
+       
+        global board
+        global flips_won
+
+        print("--- " + str(flips_won))
+
+        string = ("Won " + str(flips_won) + " flips.\n")
+        if board["zndrs"]: 
+            string += "Draw " + str(flips_won) + " cards.\n"
+        if board["okaun"]:
+            string += "Okaun is [" + str(board["okaun_pt"][0]) + "/" \
+                                   + str(board["okaun_pt"][1]) + "]."
+
+        label = Gtk.Label(label=string)
         box.add(label)
 
         self.show_all()
 
+        def destroy_me():
+            Gtk.Widget.destroy(self)
+
+       
+        GLib.timeout_add(2000, destroy_me)
 
 
 class menu_window(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Okaun Zndrsplt Device Menu")
 
-        #self.box = Gtk.Box(spacing=6)
-        #self.add(self.box)
-        
+       
+        #self.set_decorated(False) #later enable this with full screen in main loop
+
         grid = Gtk.Grid()
+        grid.set_row_homogeneous(True)
+        grid.set_column_homogeneous(True)
         self.add(grid)
 
 
 
-
-        self.button1 = Gtk.Button(label="Enter Okaun's\nBase Power and\nToughness", halign=Gtk.Align.CENTER)
+        self.button1 = Gtk.Button(label="Enter Okaun's\nBase Power and\nToughness")
         self.button1.connect("clicked", self.on_button1_clicked)
 
         self.button2 = Gtk.Button(label="Check Board\nStatus")
@@ -203,7 +259,6 @@ class menu_window(Gtk.Window):
         grid.attach(self.button6,2,2,1,1)
 
     def on_button1_clicked(self, widget):
-        print("Button 1 Clicked")
         
         dialog1 = okaun_power_dialog(self)
         dialog1.run()
@@ -211,11 +266,6 @@ class menu_window(Gtk.Window):
         dialog2.run()
 
     def on_button2_clicked(self, widget):
-        #check_board_status(board)
-
-        #dialog3 = check_board_status_dialog(self)
-        #dialog3.run()
-
 
         board_stats = Gtk.MessageDialog(
                 transient_for=self,
@@ -228,19 +278,15 @@ class menu_window(Gtk.Window):
         board_stats.destroy()
 
 
-        print("Button 2 Clicked")
 
     def on_button3_clicked(self, widget):
         toggle_okaun_otb(board)
-        print("Button 3 Clicked")
 
     def on_button4_clicked(self, widget):
         toggle_zndrs_otb(board)
-        print("Button 4 Clicked")
 
     def on_button5_clicked(self, widget):
         toggle_karak_otb(board)
-        print("Button 5 Clicked")
 
     def on_button6_clicked(self, widget):
         global board
@@ -249,21 +295,75 @@ class menu_window(Gtk.Window):
         flip_dialog = single_flip_window(self)
         flip_dialog.run()
 
-        if (last_result==True):  #was the last flip won?
-            print("WON THE FLIP! DO STUFF!")
-            win_flip(True, board)
-        else:
-            print("Better luck next time")
 
-        print("Button 6 Clicked")
+        result_dialog = single_flip_result_window(self)
+        result_dialog.run()
+        #glib.timeout_add_seconds(3) 
 
+
+
+    #precombat flip sequence
     def on_button7_clicked(self, widget):
-        precombat_flips(board)
-        print("Button 7 Clicked")
+        
+        global last_result, board, flips_won
+        last_result = True
+        flips_won = 0
+
+        #two flip sequences for okaun and zndrsplt each
+        while (last_result == True) and board["okaun"]:
+            print("----")
+            flip_dialog = single_flip_window(self)
+            flip_dialog.run()
+
+            result_dialog = single_flip_result_window(self)
+            result_dialog.run()
+        
+            if last_result:
+                flips_won += 1
+
+        last_result = True
+        while (last_result == True) and board["zndrs"]:
+            print("----")
+            flip_dialog = single_flip_window(self)
+            flip_dialog.run()
+
+            result_dialog = single_flip_result_window(self)
+            result_dialog.run()
+        
+            if last_result:
+                flips_won += 1
+
+
+        #create string to describe result of flip sequence
+        string = ("Won " + str(flips_won) + " flips.\n")
+        if board["zndrs"]: 
+            string += "Draw " + str(flips_won) + " cards.\n"
+        if board["okaun"]:
+            string += "Okaun is [" + str(board["okaun_pt"][0]) + "/" \
+                                   + str(board["okaun_pt"][1]) + "]."
+
+        #display result dialog
+        quick_test  = Gtk.MessageDialog(
+                transient_for=self,
+                flags=0,
+                message_type=Gtk.MessageType.OTHER,
+                buttons=Gtk.ButtonsType.OK,
+                text=string)
+                
+        quick_test.run()
+        quick_test.destroy()
+
+        
+        #resets
+        last_result = False #reset if neither okaun or zndrsplt is on battlefield - unnecessary?
+        flips_won = 0
+
+
+
+
 
     def on_button8_clicked(self, widget):
         new_turn_reset(board)
-        print("Button 8 Clicked")
 
     #Quit button
     def on_button9_clicked(self, widget):
@@ -287,11 +387,10 @@ board = {
 }
 
 last_result = False
-
+flips_won = 0
+choice = 0 #default to heads
 
 win = menu_window()
-#win2 = okaun_pt_window()
-#win2.show_all()
 #win.fullscreen() #will cause the entire screen to fill
 win.connect("destroy", Gtk.main_quit)
 win.show_all()
