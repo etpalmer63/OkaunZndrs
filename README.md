@@ -13,3 +13,5 @@ will later be connected to hardware.
 Here is a screenshot!
 
 ![Screenshot](Screenshot.png)
+
+![Screenshot](Screenshot2.png)
