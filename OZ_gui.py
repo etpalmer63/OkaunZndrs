@@ -10,11 +10,126 @@ import random
 from copy import deepcopy
 
 
+class okaun_pt_window (Gtk.Window):
+    def __init__(self):
+        Gtk.Window.__init__(self, title="Okaun PT")
+
+        
+
+
+        self.box = Gtk.Box(spacing=6)
+        self.add(self.box)
+
+        self.button1 = Gtk.Button(label="Power Up")
+        self.button1.connect("clicked", self.on_button1_clicked)
+        self.box.pack_start(self.button1, True, True, 0)
+        #self.add(self.button1)
+
+        self.button2 = Gtk.Button(label="Power Down")
+        self.button2.connect("clicked", self.on_button2_clicked)
+        self.box.pack_start(self.button2, True, True, 0)
+        #self.add(self.button2)
+
+        self.button3 = Gtk.Button(label="Back")
+        self.button3.connect("clicked", self.on_button3_clicked)
+        self.box.pack_start(self.button3, True, True, 0)
+
+    def on_button1_clicked(self, widget):
+        board["okaun_pt_set"][0] += 1
+        print("Okaun power set to " + str(board["okaun_pt_set"][0]))
+            
+    def on_button2_clicked(self, widget):
+        board["okaun_pt_set"][0] -= 1
+        print("Okaun power set to " + str(board["okaun_pt_set"][0]))
+
+    def on_button3_clicked(self, widget):
+        print("Done")
+        Gtk.Widget.destroy(self) 
+
+
+class okaun_power_dialog(Gtk.Dialog):
+    def __init__(self, parent):
+        Gtk.Dialog.__init__(self, title="Okaun Power Set", transient_for=parent, flags=0)
+       
+        self.set_decorated(False)
+
+        box = self.get_content_area()    
+
+        button1 = Gtk.Button(label="Power Up")
+        button1.connect("clicked", self.on_button1_clicked)
+        box.add(button1)
+
+        button2 = Gtk.Button(label="Power Down")
+        button2.connect("clicked", self.on_button2_clicked)
+        box.add(button2)
+
+        button3 = Gtk.Button(label="Done")
+        button3.connect("clicked", self.on_button3_clicked)
+        box.add(button3)
+
+        self.show_all()
+
+
+    def on_button1_clicked(self, widget):
+        board["okaun_pt_set"][0] += 1
+        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
+        print("Okaun power set to " + str(board["okaun_pt_set"][0]))
+            
+    def on_button2_clicked(self, widget):
+        board["okaun_pt_set"][0] -= 1
+        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
+        print("Okaun power set to " + str(board["okaun_pt_set"][0]))
+
+    def on_button3_clicked(self, widget):
+        print("Done")
+        Gtk.Widget.destroy(self) 
+
+
+
+class okaun_tough_dialog(Gtk.Dialog):
+    def __init__(self, parent):
+        Gtk.Dialog.__init__(self, title="Okaun Toughness Set", transient_for=parent, flags=0)
+       
+        self.set_decorated(False)
+
+        box = self.get_content_area()    
+
+        button1 = Gtk.Button(label="Toughness Up")
+        button1.connect("clicked", self.on_button1_clicked)
+        box.add(button1)
+
+        button2 = Gtk.Button(label="Power Down")
+        button2.connect("clicked", self.on_button2_clicked)
+        box.add(button2)
+
+        button3 = Gtk.Button(label="Done")
+        button3.connect("clicked", self.on_button3_clicked)
+        box.add(button3)
+
+        self.show_all()
+
+
+    def on_button1_clicked(self, widget):
+        board["okaun_pt_set"][1] += 1
+        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
+        print("Okaun toughness set to " + str(board["okaun_pt_set"][1]))
+            
+    def on_button2_clicked(self, widget):
+        board["okaun_pt_set"][1] -= 1
+        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
+        print("Okaun toughness set to " + str(board["okaun_pt_set"][1]))
+
+    def on_button3_clicked(self, widget):
+        print("Done")
+        Gtk.Widget.destroy(self) 
+
+
+
 
 class menu_window(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Okaun Zndrsplt Device Menu")
-        
+
         #self.box = Gtk.Box(spacing=6)
         #self.add(self.box)
         
@@ -36,7 +151,7 @@ class menu_window(Gtk.Window):
         
 
 
-        self.button1 = Gtk.Button(label="Enter Okaun's\nBase Power\nand Toughness")
+        self.button1 = Gtk.Button(label="Enter Okaun's\nBase Power and\nToughness", halign=Gtk.Align.CENTER)
         self.button1.connect("clicked", self.on_button1_clicked)
         #self.box.pack_start(self.button1, True, True, 0)
         #self.add(self.button)
@@ -45,15 +160,15 @@ class menu_window(Gtk.Window):
         self.button2.connect("clicked", self.on_button2_clicked)
         #self.box.pack_start(self.button2, True, True, 0)
         
-        self.button3 = Gtk.Button(label="Toggle Okaun\nOTB")
+        self.button3 = Gtk.ToggleButton(label="Toggle Okaun\nOTB")
         self.button3.connect("clicked", self.on_button3_clicked)
         #self.box.pack_start(self.button3, True, True, 0)
         
-        self.button4 = Gtk.Button(label="Toggle Zndrsplt\nOTB")
+        self.button4 = Gtk.ToggleButton(label="Toggle Zndrsplt\nOTB")
         self.button4.connect("clicked", self.on_button4_clicked)
         #self.box.pack_start(self.button4, True, True, 0)
         
-        self.button5 = Gtk.Button(label="Toggle Karak's\nThumb OTB")
+        self.button5 = Gtk.ToggleButton(label="Toggle Karak's\nThumb OTB")
         self.button5.connect("clicked", self.on_button5_clicked)
         #self.box.pack_start(self.button5, True, True, 0)
         
@@ -85,9 +200,18 @@ class menu_window(Gtk.Window):
 
     def on_button1_clicked(self, widget):
         print("Button 1 Clicked")
-        update_okaun_pt(board)
-        var1 = menu_window()
-        var1.show()
+        
+        dialog1 = okaun_power_dialog(self)
+        dialog1.run()
+        dialog2 = okaun_tough_dialog(self)
+        dialog2.run()
+
+        #okaun_win = okaun_pt_window()
+        #okaun_win.show()
+        #win2.show_all()
+        #update_okaun_pt(board)
+        #var1 = menu_window()
+        #var1.show()
 
     def on_button2_clicked(self, widget):
         check_board_status(board)
@@ -126,12 +250,6 @@ class menu_window(Gtk.Window):
 
 
 
-
-
-
-
-
-
 """
 This board dictionary contains inforamtion about the board state
 """
@@ -148,6 +266,8 @@ board = {
 
 
 win = menu_window()
+#win2 = okaun_pt_window()
+#win2.show_all()
 #win.fullscreen() #will cause the entire screen to fill
 win.connect("destroy", Gtk.main_quit)
 win.show_all()
