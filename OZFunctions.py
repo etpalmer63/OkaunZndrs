@@ -10,9 +10,14 @@ from copy import deepcopy
 
 
 def win_flip(single_flip,board):
+    string = ""
+    str1 = ""
+    str2 = ""
+
     if (single_flip == True):
         if board["zndrs"]:      #Zndrsplt on battlefield
             print("Draw a card")
+            str1 = "Draw a card\n"
             print("*FLASHING LIGHTS*") 
 
         if board["okaun"]:
@@ -21,8 +26,14 @@ def win_flip(single_flip,board):
             print( "Okaun's new power and toughness are " + \
                     str(board["okaun_pt"][0]) + "/" + \
                     str(board["okaun_pt"][1]) + ".");
+            str2 =  "Okaun's new power and toughness are " + \
+                    str(board["okaun_pt"][0]) + "/" + \
+                    str(board["okaun_pt"][1]) + ".";
+    string = str1 + str2
+    return string
 
-            
+
+
 
 def flip_coin(single_flip, board):
     print("Choose heads(0) or tails(1)")
@@ -49,6 +60,27 @@ def flip_coin(single_flip, board):
             return False
         
 
+def flip_coin(single_flip, board, choice):
+
+    if board["karak"]:   #karak's thumb on battlefield
+        print("Flipping two coins")
+        if (random.randint(0,1) == choice or \
+           (random.randint(0,1) == choice)):
+            print("WIN")
+            #win_flip(single_flip,board)
+            return True
+        else:
+            print("LOSE")
+            return False
+    else: 
+        print("Flipping one coin");
+        if (random.randint(0,1) == choice):
+            print("WIN")
+            #win_flip(single_flip,board)
+            return True
+        else:
+            print("LOSE")
+            return False
 
 """
     choose a side, flip a coin. Continue until you loose. 
@@ -106,24 +138,41 @@ def show_menu():
 
 def check_board_status(board):
     print(" === CHECKING BOARD STATUS === ")
+
+    str1 = ""
+
     if board["okaun"]:
-        print("Okaun is on the battlefield.")
-        print("Okaun is [" + str(board["okaun_pt"][0]) + "/" \
-                           + str(board["okaun_pt"][1]) + "]")
+        #print("Okaun is on the battlefield.")
+        #str1 += "Okaun is on the battlefield.\n"
+        print("Okaun [" + str(board["okaun_pt"][0]) + "/" \
+                           + str(board["okaun_pt"][1]) + "]" \
+                           + " is on the battlefield.")
+        str1 += "Okaun [" + str(board["okaun_pt"][0]) + "/" \
+                           + str(board["okaun_pt"][1]) + "]" \
+                           + " is on the battlefield."
     else:
         print("Okaun is not on the battlefield.")
-            
+        str1 += "Okaun is not on the battlefield."
+
+    str2 = ""        
     if board["zndrs"]:
         print("Zndrsplt is on the battlefield.")
+        str2 = "Zndrsplt is on the battlefield."
     else:
         print("Zndrsplt is not on the battlefield.")
-
+        str2 = "Zndrsplt is not on the battlefield."
+        
+    str3 = ""
     if board["karak"]:
         print("Karak's Thumb is on the battlefield.")
+        str3 = "Karak's Thumb is on the battlefield."
     else: 
         print("Karak's Thumb not is on the battlefield.")
+        str3 = "Karak's Thumb not is on the battlefield."
 
+    board_txt_msg = str1 + "\n" + str2 + "\n" + str3
 
+    return board_txt_msg
 
 def update_okaun_pt(board):
     print("Enter Okaun's power")
