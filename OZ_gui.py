@@ -8,43 +8,8 @@ from gi.repository import Gtk
 from OZFunctions import *
 import random
 from copy import deepcopy
+import time #for sleep timers 
 
-
-class okaun_pt_window (Gtk.Window):
-    def __init__(self):
-        Gtk.Window.__init__(self, title="Okaun PT")
-
-        
-
-
-        self.box = Gtk.Box(spacing=6)
-        self.add(self.box)
-
-        self.button1 = Gtk.Button(label="Power Up")
-        self.button1.connect("clicked", self.on_button1_clicked)
-        self.box.pack_start(self.button1, True, True, 0)
-        #self.add(self.button1)
-
-        self.button2 = Gtk.Button(label="Power Down")
-        self.button2.connect("clicked", self.on_button2_clicked)
-        self.box.pack_start(self.button2, True, True, 0)
-        #self.add(self.button2)
-
-        self.button3 = Gtk.Button(label="Back")
-        self.button3.connect("clicked", self.on_button3_clicked)
-        self.box.pack_start(self.button3, True, True, 0)
-
-    def on_button1_clicked(self, widget):
-        board["okaun_pt_set"][0] += 1
-        print("Okaun power set to " + str(board["okaun_pt_set"][0]))
-            
-    def on_button2_clicked(self, widget):
-        board["okaun_pt_set"][0] -= 1
-        print("Okaun power set to " + str(board["okaun_pt_set"][0]))
-
-    def on_button3_clicked(self, widget):
-        print("Done")
-        Gtk.Widget.destroy(self) 
 
 
 class okaun_power_dialog(Gtk.Dialog):
@@ -124,6 +89,30 @@ class okaun_tough_dialog(Gtk.Dialog):
         Gtk.Widget.destroy(self) 
 
 
+class check_board_status_dialog(Gtk.Dialog):
+    def __init__(self,parent):
+        Gtk.Dialog.__init__(self, title="Board Status", transient_for=parent, flags=0)
+
+        self.set_decorated(False)
+
+        label = Gtk.Label(label="Stuff goes here")
+        
+        button = Gtk.Button(label="Ok")
+        botton.connect("clicked", dialog.destroy())
+        
+
+        box = self.get_content_area()
+        box.add(label)
+        box.add(button)
+        
+
+
+        self.show_all()
+
+        #time.sleep(5)
+        #Gtk.Widget.destroy(self)
+
+
 
 
 class menu_window(Gtk.Window):
@@ -137,56 +126,34 @@ class menu_window(Gtk.Window):
         self.add(grid)
 
 
-        """
-        button1 = Gtk.Button(label="Button 1")
-        button2 = Gtk.Button(label="Button 2")
-        button3 = Gtk.Button(label="Button 3")
-        button4 = Gtk.Button(label="Button 4")
-        button5 = Gtk.Button(label="Button 5")
-        button6 = Gtk.Button(label="Button 6")
-        button7 = Gtk.Button(label="Button 7")
-        button8 = Gtk.Button(label="Button 8")
-        button9 = Gtk.Button(label="Button 9")
-        """
-        
 
 
         self.button1 = Gtk.Button(label="Enter Okaun's\nBase Power and\nToughness", halign=Gtk.Align.CENTER)
         self.button1.connect("clicked", self.on_button1_clicked)
-        #self.box.pack_start(self.button1, True, True, 0)
-        #self.add(self.button)
 
         self.button2 = Gtk.Button(label="Check Board\nStatus")
         self.button2.connect("clicked", self.on_button2_clicked)
-        #self.box.pack_start(self.button2, True, True, 0)
         
         self.button3 = Gtk.ToggleButton(label="Toggle Okaun\nOTB")
         self.button3.connect("clicked", self.on_button3_clicked)
-        #self.box.pack_start(self.button3, True, True, 0)
         
         self.button4 = Gtk.ToggleButton(label="Toggle Zndrsplt\nOTB")
         self.button4.connect("clicked", self.on_button4_clicked)
-        #self.box.pack_start(self.button4, True, True, 0)
         
         self.button5 = Gtk.ToggleButton(label="Toggle Karak's\nThumb OTB")
         self.button5.connect("clicked", self.on_button5_clicked)
-        #self.box.pack_start(self.button5, True, True, 0)
         
         self.button6 = Gtk.Button(label="Single\nFlip")
         self.button6.connect("clicked", self.on_button6_clicked)
-        #self.box.pack_start(self.button6, True, True, 0)
         
         self.button7 = Gtk.Button(label="Precombat\nFlip Sequence")
         self.button7.connect("clicked", self.on_button7_clicked)
-        #self.box.pack_start(self.button7, True, True, 0)
         
         self.button8 = Gtk.Button(label="New Turn\nOkaun Reset")
         self.button8.connect("clicked", self.on_button8_clicked)
-        #self.box.pack_start(self.button8, True, True, 0)
         
         self.button9 = Gtk.Button(label="Exit")
         self.button9.connect("clicked", self.on_button9_clicked)
-        #self.box.pack_start(self.button9, True, True, 0)
 
         grid.add(self.button1) 
         grid.attach(self.button2,1,0,1,1)
@@ -206,15 +173,12 @@ class menu_window(Gtk.Window):
         dialog2 = okaun_tough_dialog(self)
         dialog2.run()
 
-        #okaun_win = okaun_pt_window()
-        #okaun_win.show()
-        #win2.show_all()
-        #update_okaun_pt(board)
-        #var1 = menu_window()
-        #var1.show()
-
     def on_button2_clicked(self, widget):
         check_board_status(board)
+
+        dialog3 = check_board_status_dialog(self)
+        dialog3.run()
+
         print("Button 2 Clicked")
 
     def on_button3_clicked(self, widget):
