@@ -15,3 +15,8 @@ Here is a screenshot!
 ![Screenshot](Screenshot.png)
 
 ![Screenshot](Screenshot2.png)
+
+
+To test: 
+
+Download OZFunctions.py and OZ_gui.py into the same folder. At the terminal navigate to the directory containing both files and type `python3 OZ_gui.py` and press enter.
