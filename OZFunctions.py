@@ -106,24 +106,41 @@ def show_menu():
 
 def check_board_status(board):
     print(" === CHECKING BOARD STATUS === ")
+
+    str1 = ""
+
     if board["okaun"]:
-        print("Okaun is on the battlefield.")
-        print("Okaun is [" + str(board["okaun_pt"][0]) + "/" \
-                           + str(board["okaun_pt"][1]) + "]")
+        #print("Okaun is on the battlefield.")
+        #str1 += "Okaun is on the battlefield.\n"
+        print("Okaun [" + str(board["okaun_pt"][0]) + "/" \
+                           + str(board["okaun_pt"][1]) + "]" \
+                           + " is on the battlefield.")
+        str1 += "Okaun [" + str(board["okaun_pt"][0]) + "/" \
+                           + str(board["okaun_pt"][1]) + "]" \
+                           + " is on the battlefield."
     else:
         print("Okaun is not on the battlefield.")
-            
+        str1 += "Okaun is not on the battlefield."
+
+    str2 = ""        
     if board["zndrs"]:
         print("Zndrsplt is on the battlefield.")
+        str2 = "Zndrsplt is on the battlefield."
     else:
         print("Zndrsplt is not on the battlefield.")
-
+        str2 = "Zndrsplt is not on the battlefield."
+        
+    str3 = ""
     if board["karak"]:
         print("Karak's Thumb is on the battlefield.")
+        str3 = "Karak's Thumb is on the battlefield."
     else: 
         print("Karak's Thumb not is on the battlefield.")
+        str3 = "Karak's Thumb not is on the battlefield."
 
+    board_txt_msg = str1 + "\n" + str2 + "\n" + str3
 
+    return board_txt_msg
 
 def update_okaun_pt(board):
     print("Enter Okaun's power")
