@@ -10,9 +10,14 @@ from copy import deepcopy
 
 
 def win_flip(single_flip,board):
+    string = ""
+    str1 = ""
+    str2 = ""
+
     if (single_flip == True):
         if board["zndrs"]:      #Zndrsplt on battlefield
             print("Draw a card")
+            str1 = "Draw a card\n"
             print("*FLASHING LIGHTS*") 
 
         if board["okaun"]:
@@ -21,8 +26,14 @@ def win_flip(single_flip,board):
             print( "Okaun's new power and toughness are " + \
                     str(board["okaun_pt"][0]) + "/" + \
                     str(board["okaun_pt"][1]) + ".");
+            str2 =  "Okaun's new power and toughness are " + \
+                    str(board["okaun_pt"][0]) + "/" + \
+                    str(board["okaun_pt"][1]) + ".";
+    string = str1 + str2
+    return string
 
-            
+
+
 
 def flip_coin(single_flip, board):
     print("Choose heads(0) or tails(1)")
@@ -49,6 +60,27 @@ def flip_coin(single_flip, board):
             return False
         
 
+def flip_coin(single_flip, board, choice):
+
+    if board["karak"]:   #karak's thumb on battlefield
+        print("Flipping two coins")
+        if (random.randint(0,1) == choice or \
+           (random.randint(0,1) == choice)):
+            print("WIN")
+            #win_flip(single_flip,board)
+            return True
+        else:
+            print("LOSE")
+            return False
+    else: 
+        print("Flipping one coin");
+        if (random.randint(0,1) == choice):
+            print("WIN")
+            #win_flip(single_flip,board)
+            return True
+        else:
+            print("LOSE")
+            return False
 
 """
     choose a side, flip a coin. Continue until you loose. 

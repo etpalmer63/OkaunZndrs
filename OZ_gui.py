@@ -36,11 +36,13 @@ class okaun_power_dialog(Gtk.Dialog):
 
 
     def on_button1_clicked(self, widget):
+        global board
         board["okaun_pt_set"][0] += 1
         board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
         print("Okaun power set to " + str(board["okaun_pt_set"][0]))
             
     def on_button2_clicked(self, widget):
+        global board
         board["okaun_pt_set"][0] -= 1
         board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
         print("Okaun power set to " + str(board["okaun_pt_set"][0]))
@@ -75,11 +77,13 @@ class okaun_tough_dialog(Gtk.Dialog):
 
 
     def on_button1_clicked(self, widget):
+        global board
         board["okaun_pt_set"][1] += 1
         board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
         print("Okaun toughness set to " + str(board["okaun_pt_set"][1]))
             
     def on_button2_clicked(self, widget):
+        global board
         board["okaun_pt_set"][1] -= 1
         board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
         print("Okaun toughness set to " + str(board["okaun_pt_set"][1]))
@@ -90,6 +94,7 @@ class okaun_tough_dialog(Gtk.Dialog):
 
 
 class single_flip_window(Gtk.Dialog):
+
     def __init__(self,parent):
         Gtk.Dialog.__init__(self, title="Single Flip", transient_for=parent, flags=0)
 
@@ -108,28 +113,42 @@ class single_flip_window(Gtk.Dialog):
         button2.connect("clicked", self.on_button2_clicked)
         box.add(button2)
 
-        button3 = Gtk.Button(label="Done")
-        button3.connect("clicked", self.on_button3_clicked)
-        box.add(button3)
-
         self.show_all()
 
-
     def on_button1_clicked(self, widget):
-        board["okaun_pt_set"][1] += 1
-        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
-        print("Okaun toughness set to " + str(board["okaun_pt_set"][1]))
-            
-    def on_button2_clicked(self, widget):
-        board["okaun_pt_set"][1] -= 1
-        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
-        print("Okaun toughness set to " + str(board["okaun_pt_set"][1]))
-
-    def on_button3_clicked(self, widget):
-        print("Done")
+        global last_result
+        if flip_coin(True,board,0):
+            print("WINNER")
+            last_result = True
+        else:
+            print("LOSER")
+            last_result = False
         Gtk.Widget.destroy(self) 
-        
 
+    def on_button2_clicked(self, widget):
+        global last_result
+        if flip_coin(True,board,1):
+            last_result = True
+            print("WINNER")
+        else:
+            last_result = False
+            print("LOSER")
+        Gtk.Widget.destroy(self) 
+
+
+
+class single_flip_result_window(Gtk.Dialog):
+    def __init__(self,parent):
+        Gtk.Dialog.__init__(self, title="Flip Result", transient_for=parent, flags=0)
+
+        self.set_decorated(False)
+
+        box = self.get_content_area()    
+        
+        label = Gtk.Label(label="LOSE!")
+        box.add(label)
+
+        self.show_all()
 
 
 
@@ -224,7 +243,18 @@ class menu_window(Gtk.Window):
         print("Button 5 Clicked")
 
     def on_button6_clicked(self, widget):
-        flip_coin(True,board) #single flip
+        global board
+        global last_result 
+
+        flip_dialog = single_flip_window(self)
+        flip_dialog.run()
+
+        if (last_result==True):  #was the last flip won?
+            print("WON THE FLIP! DO STUFF!")
+            win_flip(True, board)
+        else:
+            print("Better luck next time")
+
         print("Button 6 Clicked")
 
     def on_button7_clicked(self, widget):
@@ -256,7 +286,7 @@ board = {
     "karak" : False         # Karak's Thumb not on the battlefield to start
 }
 
-
+last_result = False
 
 
 win = menu_window()
