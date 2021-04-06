@@ -31,6 +31,16 @@ class okaun_power_dialog(Gtk.Dialog):
         button3.connect("clicked", self.on_button3_clicked)
         box.add(button3)
 
+        label1 = Gtk.Label(label="Power Set")
+        box.add(label1)
+
+        adjustment = Gtk.Adjustment(upper=999, step_increment=1, page_increment=10)
+        self.spin_button = Gtk.SpinButton()
+        self.spin_button.set_adjustment(adjustment)
+        self.spin_button.set_value(3)
+        self.spin_button.connect("value-changed", self.on_value_changed)
+        box.add(self.spin_button)
+
         self.show_all()
 
 
@@ -50,6 +60,8 @@ class okaun_power_dialog(Gtk.Dialog):
         print("Done")
         Gtk.Widget.destroy(self) 
 
+    def on_value_changed(self, scroll):
+        print(self.spin_button.get_value_as_int())
 
 
 class okaun_tough_dialog(Gtk.Dialog):
