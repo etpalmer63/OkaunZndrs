@@ -19,27 +19,39 @@ class okaun_power_dialog(Gtk.Dialog):
 
         box = self.get_content_area()    
 
-        button1 = Gtk.Button(label="Power Up")
-        button1.connect("clicked", self.on_button1_clicked)
-        box.add(button1)
+        #button1 = Gtk.Button(label="Power Up")
+        #button1.connect("clicked", self.on_button1_clicked)
+        #box.add(button1)
 
-        button2 = Gtk.Button(label="Power Down")
-        button2.connect("clicked", self.on_button2_clicked)
-        box.add(button2)
+        #button2 = Gtk.Button(label="Power Down")
+        #button2.connect("clicked", self.on_button2_clicked)
+        #box.add(button2)
+
+        global board
+
+        label1 = Gtk.Label(label="Power")
+        box.add(label1)
+
+        adjustment1 = Gtk.Adjustment(upper=999, step_increment=1, page_increment=10)
+        self.spin_button_1 = Gtk.SpinButton()
+        self.spin_button_1.set_adjustment(adjustment1)
+        self.spin_button_1.set_value(board["okaun_pt_set"][0])
+        self.spin_button_1.connect("value-changed", self.on_value_changed_1)
+        box.add(self.spin_button_1)
+
+        label2 = Gtk.Label(label="Toughness")
+        box.add(label2)
+
+        adjustment2 = Gtk.Adjustment(upper=999, step_increment=1, page_increment=10)
+        self.spin_button_2 = Gtk.SpinButton()
+        self.spin_button_2.set_adjustment(adjustment2)
+        self.spin_button_2.set_value(board["okaun_pt_set"][1])
+        self.spin_button_2.connect("value-changed", self.on_value_changed_2)
+        box.add(self.spin_button_2)
 
         button3 = Gtk.Button(label="Done")
         button3.connect("clicked", self.on_button3_clicked)
         box.add(button3)
-
-        label1 = Gtk.Label(label="Power Set")
-        box.add(label1)
-
-        adjustment = Gtk.Adjustment(upper=999, step_increment=1, page_increment=10)
-        self.spin_button = Gtk.SpinButton()
-        self.spin_button.set_adjustment(adjustment)
-        self.spin_button.set_value(3)
-        self.spin_button.connect("value-changed", self.on_value_changed)
-        box.add(self.spin_button)
 
         self.show_all()
 
@@ -60,8 +72,17 @@ class okaun_power_dialog(Gtk.Dialog):
         print("Done")
         Gtk.Widget.destroy(self) 
 
-    def on_value_changed(self, scroll):
-        print(self.spin_button.get_value_as_int())
+    def on_value_changed_1(self, scroll):
+        global board
+        board["okaun_pt_set"][0]=self.spin_button_1.get_value_as_int()
+        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
+        print(self.spin_button_1.get_value_as_int())
+
+    def on_value_changed_2(self, scroll):
+        global board
+        board["okaun_pt_set"][1]=self.spin_button_2.get_value_as_int()
+        board.update({"okaun_pt":deepcopy(board["okaun_pt_set"])})
+        print(self.spin_button_2.get_value_as_int())
 
 
 class okaun_tough_dialog(Gtk.Dialog):
@@ -229,6 +250,7 @@ class menu_window(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Okaun Zndrsplt Device Menu")
 
+
        
         #self.set_decorated(False) #later enable this with full screen in main loop
 
@@ -238,8 +260,13 @@ class menu_window(Gtk.Window):
         self.add(grid)
 
 
-
-        self.button1 = Gtk.Button(label="Enter Okaun's\nBase Power and\nToughness")
+        label = Gtk.Label()
+        label.set_text("Enter Okaun's\nBase Power and\nToughness")
+        label.set_justify(Gtk.Justification.CENTER)
+        #self.button1 = Gtk.Button(label="Enter Okaun's\nBase Power and\nToughness")
+        self.button1 = Gtk.Button()
+        self.button1.add(label)
+        label.set_mnemonic_widget(self.button1)
         self.button1.connect("clicked", self.on_button1_clicked)
 
         self.button2 = Gtk.Button(label="Check Board\nStatus")
@@ -280,8 +307,8 @@ class menu_window(Gtk.Window):
         
         dialog1 = okaun_power_dialog(self)
         dialog1.run()
-        dialog2 = okaun_tough_dialog(self)
-        dialog2.run()
+        #dialog2 = okaun_tough_dialog(self)
+        #dialog2.run()
 
     def on_button2_clicked(self, widget):
 
@@ -299,6 +326,7 @@ class menu_window(Gtk.Window):
 
     def on_button3_clicked(self, widget):
         toggle_okaun_otb(board)
+        
 
     def on_button4_clicked(self, widget):
         toggle_zndrs_otb(board)
