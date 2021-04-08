@@ -9,6 +9,33 @@ import random
 from copy import deepcopy
 import time #for sleep timers 
 
+def gif_select_win():
+    
+    win_image = [
+            "dchapelle_win.gif",
+            "jeancluade_win.gif",
+            "miketyson_win.gif",
+            "man_win.gif",
+            "rocky_win.gif",
+            "oldman_win.gif",
+            "ufc_win.gif"]
+
+    sel = random.randint(0,len(win_image)-1)
+    return win_image[sel]
+
+
+def gif_select_lose():
+    
+    lose_image = [
+            "gladiator_loser.gif",
+            "tswift_loser.gif",
+            "missedkick_loser.gif",
+            "hulahoop_loser.gif",
+            "skateboard_loser.gif"]
+
+    sel = random.randint(0,len(lose_image)-1)
+    return lose_image[sel]
+
 
 
 class okaun_power_dialog(Gtk.Dialog):
@@ -189,16 +216,18 @@ class single_flip_result_window(Gtk.Dialog):
       
 
         img_coin_flip = Gtk.Image()
-        img_coin_flip.set_from_file("coin_flip.gif")
-        box.add(img_coin_flip)
 
 
         global last_result, board
 
         if last_result:
             label = Gtk.Label(label=win_flip(True,board))
+            img_coin_flip.set_from_file(gif_select_win())
         else:
+            img_coin_flip.set_from_file(gif_select_lose())
             label = Gtk.Label(label="LOSE!")
+
+        box.add(img_coin_flip)
         box.add(label)
 
         
