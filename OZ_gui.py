@@ -165,7 +165,13 @@ class single_flip_result_window(Gtk.Dialog):
         self.set_decorated(False)
 
         box = self.get_content_area()    
-       
+      
+
+        img_coin_flip = Gtk.Image()
+        img_coin_flip.set_from_file("coin_flip.gif")
+        box.add(img_coin_flip)
+
+
         global last_result, board
 
         if last_result:
