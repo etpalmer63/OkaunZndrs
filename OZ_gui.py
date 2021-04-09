@@ -298,7 +298,13 @@ class menu_window(Gtk.Window):
         label.set_mnemonic_widget(self.button1)
         self.button1.connect("clicked", self.on_button1_clicked)
 
-        self.button2 = Gtk.Button(label="Check Board\nStatus")
+        label2 = Gtk.Label()
+        label2.set_text("Check Board\nStatus")
+        label2.set_justify(Gtk.Justification.CENTER)
+        self.button2 = Gtk.Button()
+        self.button2.add(label2)
+        label2.set_mnemonic_widget(self.button2)
+        #self.button2 = Gtk.Button(label="Check Board\nStatus")
         self.button2.connect("clicked", self.on_button2_clicked)
         
         self.button3 = Gtk.ToggleButton(label="Okaun")
@@ -310,17 +316,37 @@ class menu_window(Gtk.Window):
         self.button5 = Gtk.ToggleButton(label="Karak's Thumb")
         self.button5.connect("clicked", self.on_button5_clicked)
         
-        self.button6 = Gtk.Button(label="Single\nFlip")
+        label6 = Gtk.Label()
+        label6.set_text("Single\nFlip")
+        label6.set_justify(Gtk.Justification.CENTER)
+        self.button6 = Gtk.Button()
+        self.button6.add(label6)
+        label6.set_mnemonic_widget(self.button6)
+        #self.button6 = Gtk.Button(label="Single\nFlip")
         self.button6.connect("clicked", self.on_button6_clicked)
         
-        self.button7 = Gtk.Button(label="Precombat\nFlip Sequence")
+        label7 = Gtk.Label()
+        label7.set_text("Precombat\nFlip Sequence")
+        label7.set_justify(Gtk.Justification.CENTER)
+        self.button7 = Gtk.Button()
+        self.button7.add(label7)
+        label7.set_mnemonic_widget(self.button7)
+        #self.button7 = Gtk.Button(label="Precombat\nFlip Sequence")
         self.button7.connect("clicked", self.on_button7_clicked)
         
-        self.button8 = Gtk.Button(label="New Turn\nOkaun Reset")
+        label8 = Gtk.Label()
+        label8.set_text("New Turn\nOkaun Reset")
+        label8.set_justify(Gtk.Justification.CENTER)
+        self.button8 = Gtk.Button()
+        self.button8.add(label8)
+        label8.set_mnemonic_widget(self.button8)
+        #self.button8 = Gtk.Button(label="New Turn\nOkaun Reset")
         self.button8.connect("clicked", self.on_button8_clicked)
         
         self.button9 = Gtk.Button(label="Exit")
         self.button9.connect("clicked", self.on_button9_clicked)
+
+
 
         grid.add(self.button1) 
         grid.attach(self.button2,1,0,1,1)
