@@ -220,13 +220,18 @@ class single_flip_result_window(Gtk.Dialog):
 
         global last_result, board
 
+        label = Gtk.Label()
+
         if last_result:
-            label = Gtk.Label(label=win_flip(True,board))
+            #label = Gtk.Label(label=win_flip(True,board))
+            label.set_text(win_flip(True, board))
             img_coin_flip.set_from_file(gif_select_win())
         else:
             img_coin_flip.set_from_file(gif_select_lose())
-            label = Gtk.Label(label="LOSE!")
+            label.set_text("LOSE!")
+            #label = Gtk.Label(label="LOSE!")
 
+        label.set_justify(Gtk.Justification.CENTER)
         box.add(img_coin_flip)
         box.add(label)
 
@@ -243,36 +248,6 @@ class single_flip_result_window(Gtk.Dialog):
        
         GLib.timeout_add(2000, destroy_me)
 
-class flip_sequence_result_window(Gtk.Dialog):
-    def __init__(self,parent):
-        Gtk.Dialog.__init__(self, title="Sequence Result", transient_for=parent, flags=0)
-
-        self.set_decorated(False)
-
-        box = self.get_content_area()    
-       
-        global board
-        global flips_won
-
-        print("--- " + str(flips_won))
-
-        string = ("Won " + str(flips_won) + " flips.\n")
-        if board["zndrs"]: 
-            string += "Draw " + str(flips_won) + " cards.\n"
-        if board["okaun"]:
-            string += "Okaun is [" + str(board["okaun_pt"][0]) + "/" \
-                                   + str(board["okaun_pt"][1]) + "]."
-
-        label = Gtk.Label(label=string)
-        box.add(label)
-
-        self.show_all()
-
-        def destroy_me():
-            Gtk.Widget.destroy(self)
-
-       
-        GLib.timeout_add(2000, destroy_me)
 
 
 class menu_window(Gtk.Window):
