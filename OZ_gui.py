@@ -9,6 +9,9 @@ import random
 from copy import deepcopy
 import time #for sleep timers 
 
+from pygame import mixer #for sound
+
+
 def gif_select_win():
     
     win_image = [
@@ -356,6 +359,8 @@ class menu_window(Gtk.Window):
 
     def on_button3_clicked(self, widget):
         toggle_okaun_otb(board)
+        sound = mixer.Sound('needforspeed.wav')
+        sound.play()
         
 
     def on_button4_clicked(self, widget):
@@ -453,7 +458,6 @@ class menu_window(Gtk.Window):
 """
 This board dictionary contains inforamtion about the board state
 """
-
 board = {
     "okaun_pt" : [3,3],     # Okaun's current power and toughness
     "okaun_pt_set": [3,3],  # Okaun's reset to power and toughness  
@@ -465,6 +469,8 @@ board = {
 last_result = False
 flips_won = 0
 choice = 0 #default to heads
+
+mixer.init() #for playing sounds
 
 win = menu_window()
 #win.fullscreen() #will cause the entire screen to fill
